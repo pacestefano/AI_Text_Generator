@@ -55,7 +55,7 @@ async function generateCaptionWithAI(imageBase64, style) {
 
     console.log('Prompt inviato al backend:', prompt);
 
-    const response = await fetch('https://https://ai-text-generator-45dh.onrender.com/generate-caption', {  // Usa l'URL del tuo backend su Render
+    const response = await fetch('https://https://https://ai-text-generator-1.onrender.com/generate-caption', {  // Usa l'URL del tuo backend su Render
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
