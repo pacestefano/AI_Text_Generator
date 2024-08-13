@@ -6,7 +6,7 @@ const app = express();
 
 // Configura CORS per consentire richieste dal dominio del frontend
 const corsOptions = {
-    origin: 'https://pacestefano.github.io',  // Sostituisci con il dominio del tuo frontend
+    origin: 'https://pacestefano.github.io/AI_Text_Generator/',  // Sostituisci con il dominio del tuo frontend
     methods: 'GET,POST',  // Permetti solo i metodi necessari
     allowedHeaders: 'Content-Type,Authorization'  // Specifica gli headers consentiti
 };
