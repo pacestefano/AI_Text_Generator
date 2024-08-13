@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Caption per Instagram</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .step-container {
+            position: relative;
+            margin-bottom: 30px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+        }
+        .step-label {
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            background-color: #fff;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input[type="file"] {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            box-sizing: border-box;
+        }
+        #imageUploadContainer {
+            display: flex;
+            align-items: center;
+        }
+        #imageUpload {
+            flex-grow: 1;
+        }
+        #imagePreview {
+            width: 50px;
+            height: 50px;
+            margin-left: 10px;
+            object-fit: cover;
+            border-radius: 5px;
+            display: none;
+        }
+        #imageText {
+            margin-right: 10px;
+            font-size: 14px;
+            color: #555;
+            display: none;
+        }
+        #styleButtons {
+            margin-bottom: 15px;
+        }
+        .style-button {
+            background-color: #d3d3d3;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .style-button.selected {
+            background-color: #007bff;
+        }
+        .style-button:hover {
+            background-color: #bbb;
+        }
+        #generateBtn {
+            background-color: #d3d3d3;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        #generateBtn:hover {
+            background-color: #bbb;
+        }
+        .caption-container {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .caption-box {
+            position: relative;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .caption-box input[type="checkbox"] {
+            margin-left: 10px;
+        }
+        .copy-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #007bff;
+            margin-left: 10px;
+        }
+        .copy-icon i {
+            font-size: 16px;
+        }
+        .copy-icon:hover {
+            color: #0056b3;
+        }
+        #previewBtn {
+            display: none;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        #previewBtn:hover {
+            background-color: #0056b3;
+        }
+        .instagram-preview {
+            margin-top: 30px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid #dbdbdb;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .instagram-caption {
+            padding: 10px 15px;
+            font-size: 14px;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            overflow-wrap: break-word;
+            max-width: 100%;
+            box-sizing: border-box;
+            border-top: 1px solid #dbdbdb;
+            height: auto;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* Step 4 initially hidden */
+        #step4Container {
+            display: none;
+        }
+    </style>
+    <!-- Collegamento a FontAwesome per le icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMM5p1XXC9JupOWXfPDP3fr5v6Uwbs1XfH0KgVn" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>Generatore di Caption per Instagram</h1>
+
+        <div class="step-container">
+            <div class="step-label">Step1: seleziona l'immagine che vuoi postare</div>
+            <div id="imageUploadContainer">
+                <input type="file" id="imageUpload" accept="image/*">
+                <span id="imageText">l'immagine per il tuo Post</span>
+                <img id="imagePreview" alt="Anteprima Immagine">
+            </div>
+        </div>
+
+        <div class="step-container">
+            <div class="step-label">Step2: Scegli lo stile delle caption che vuoi generare</div>
+            <div id="styleButtons"></div> <!-- Qui verranno inseriti i pulsanti -->
+        </div>
+
+        <div class="step-container">
+            <div class="step-label">Step3: fai click per generare le captions</div>
+            <button id="generateBtn">Genera Caption con AI</button>
+        </div>
+
+        <!-- Step 4 -->
+        <div id="step4Container" class="step-container">
+            <div class="step-label">Step4: Scegli la caption che preferisci e vedi l'anteprima</div>
+            <div id="captionContainer" class="caption-container"></div>
+            <button id="previewBtn">Vedi l'anteprima del tuo post</button>
+        </div>
+
+        <div id="instagramPreview" class="instagram-preview" style="display:none;">
+            <div class="instagram-header">
+                <img src="https://via.placeholder.com/32" alt="user">
+                <span class="instagram-username">username</span>
+            </div>
+            <img id="instagramImage" src="" alt="Preview Image" class="instagram-image">
+            <div id="instagramCaption" class="instagram-caption"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
