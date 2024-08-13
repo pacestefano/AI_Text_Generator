@@ -1,5 +1,5 @@
 // Configurazione API di OpenAI
-const OPENAI_API_KEY = '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'; // Sostituisci con la tua chiave API
+const OPENAI_API_KEY = 'sk-2jEBAVHLl2NLjirfMzDy-HGCDaviOyiiK8kshq0l0JT3BlbkFJPhMEZqd6Qcdzz3Kt5p8UxCq50SbzB4dZabVfkSsqkA'; // Sostituisci con la tua chiave API
 const OPENAI_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 
 let selectedCaption = ''; // Variabile per memorizzare la caption selezionata
