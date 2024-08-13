@@ -1,19 +1,28 @@
 const express = require('express');
 const axios = require('axios');
-const cors = require('cors');
+const cors = require('cors');  // Importa il pacchetto CORS
 
 const app = express();
-app.use(cors());
+
+// Configura CORS per consentire richieste dal dominio del frontend
+const corsOptions = {
+    origin: 'https://pacestefano.github.io',  // Sostituisci con il dominio del tuo frontend
+    methods: 'GET,POST',  // Permetti solo i metodi necessari
+    allowedHeaders: 'Content-Type,Authorization'  // Specifica gli headers consentiti
+};
+
+app.use(cors(corsOptions));  // Applica le opzioni CORS
+
 app.use(express.json());
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;  // Assicurati che la chiave API sia gestita tramite variabili d'ambiente
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 app.post('/generate-caption', async (req, res) => {
     try {
         const { prompt, imageBase64 } = req.body;
 
         const requestBody = {
-            model: "gpt-4o-mini", 
+            model: "gpt-4o-mini",
             messages: [
                 {
                     role: "user",
