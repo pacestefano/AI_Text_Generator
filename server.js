@@ -6,7 +6,7 @@ const app = express();
 
 // Configura CORS per permettere richieste dal tuo dominio
 app.use(cors({
-    origin: 'https://pacestefano.github.io',  // Domini autorizzati
+    origin: '*',  // Domini autorizzati
     methods: ['GET', 'POST'],  // Metodi HTTP consentiti
     allowedHeaders: ['Content-Type', 'Authorization'],  // Header consentiti
     credentials: true  // Se vuoi consentire l'invio di cookie o credenziali
