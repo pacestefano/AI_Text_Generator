@@ -1,6 +1,4 @@
-// Configurazione API di OpenAI
-const OPENAI_API_KEY = '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'; // Sostituisci con la tua chiave API
-const OPENAI_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
+
 
 let selectedCaption = ''; // Variabile per memorizzare la caption selezionata
 let selectedStyle = ''; // Variabile per memorizzare lo stile selezionato
@@ -51,29 +49,32 @@ async function encodeImage(imageFile) {
 }
 
 // Funzione per generare una caption utilizzando OpenAI API
+// Modifica la funzione per fare la richiesta al backend
 async function generateCaptionWithAI(imageBase64, style) {
     const prompt = stylePrompts[style];
 
-    console.log('Prompt inviato all\'API:', prompt);
+    console.log('Prompt inviato al backend:', prompt);
 
-    const requestBody = {
-        model: "gpt-4o-mini",  // Specifica il modello GPT-4o mini
-        messages: [
-            {
-                role: "user",
-                content: [
-                    { "type": "text", "text": prompt },
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": `data:image/jpeg;base64,${imageBase64}`
-                        }
-                    }
-                ]
-            }
-        ],
-        max_tokens: 150
-    };
+    const response = await fetch('https://[il-tuo-dominio-render].onrender.com/generate-caption', {  // Usa l'URL del tuo backend su Render
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt, imageBase64 })
+    });
+
+    if (!response.ok) {
+        console.error('Errore nella risposta dal backend:', response.statusText);
+        throw new Error(`Errore nel backend: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log('Risposta dal backend:', data);
+    return data.caption;
+}
+
+
+
 
     console.log('Richiesta API:', requestBody);
 
