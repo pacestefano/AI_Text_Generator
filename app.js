@@ -74,28 +74,6 @@ async function generateCaptionWithAI(imageBase64, style) {
 }
 
 
-
-    console.log('Richiesta API:', requestBody);
-
-    const response = await fetch(OPENAI_ENDPOINT, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${OPENAI_API_KEY}`
-        },
-        body: JSON.stringify(requestBody)
-    });
-
-    if (!response.ok) {
-        console.error('Errore nella risposta dell\'API:', response.statusText);
-        throw new Error(`Errore nell'API OpenAI: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    console.log('Risposta dell\'API:', data);
-    return data.choices[0].message.content.trim();
-}
-
 // Evento per la generazione delle caption
 document.getElementById('generateBtn').addEventListener('click', async () => {
     try {
