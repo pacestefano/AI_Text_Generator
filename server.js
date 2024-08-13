@@ -1,17 +1,16 @@
 const express = require('express');
 const axios = require('axios');
-const cors = require('cors');  // Importa il pacchetto CORS
+const cors = require('cors');
 
 const app = express();
 
-// Configura CORS per consentire richieste dal dominio del frontend
-const corsOptions = {
-    origin: '*',  // Sostituisci con il dominio del tuo frontend
-    methods: 'GET,POST',  // Permetti solo i metodi necessari
-    allowedHeaders: 'Content-Type,Authorization'  // Specifica gli headers consentiti
-};
-
-app.use(cors(corsOptions));  // Applica le opzioni CORS
+// Configura CORS per permettere richieste dal tuo dominio
+app.use(cors({
+    origin: 'https://pacestefano.github.io',  // Domini autorizzati
+    methods: ['GET', 'POST'],  // Metodi HTTP consentiti
+    allowedHeaders: ['Content-Type', 'Authorization'],  // Header consentiti
+    credentials: true  // Se vuoi consentire l'invio di cookie o credenziali
+}));
 
 app.use(express.json());
 
