@@ -20,17 +20,27 @@ app.post('/generate-caption', async (req, res) => {
     try {
         const { prompt, imageBase64 } = req.body;
 
+        // Crea il corpo della richiesta per l'API di OpenAI
         const requestBody = {
             model: "gpt-4o-mini",
             messages: [
                 {
                     role: "user",
-                    content: prompt
+                    content: [
+                        { "type": "text", "text": prompt },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": `data:image/jpeg;base64,${imageBase64}`
+                            }
+                        }
+                    ]
                 }
             ],
             max_tokens: 150
         };
 
+        // Invia la richiesta all'API di OpenAI
         const response = await axios.post('https://api.openai.com/v1/chat/completions', requestBody, {
             headers: {
                 'Authorization': `Bearer ${OPENAI_API_KEY}`,
@@ -38,6 +48,7 @@ app.post('/generate-caption', async (req, res) => {
             }
         });
 
+        // Risponde con la caption generata
         res.json({ caption: response.data.choices[0].message.content.trim() });
     } catch (error) {
         console.error('Errore nella richiesta all\'API OpenAI:', error.response ? error.response.data : error.message);
